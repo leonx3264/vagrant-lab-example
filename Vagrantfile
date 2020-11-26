@@ -76,6 +76,12 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
       vb.memory = 2048
     end
+    kali.vm.provision "shell", inline: <<-SHELL
+      mkdir /home/vagrant
+      mkdir /home/vagrant/Desktop
+      touch /home/vagrant/Desktop/ReadMe.txt
+      wget -O /home/vagrant/Desktop/ReadMe.txt https://raw.githubusercontent.com/leonx3264/vagrant-lab-example/master/README.md
+    SHELL
   end
 
 end
