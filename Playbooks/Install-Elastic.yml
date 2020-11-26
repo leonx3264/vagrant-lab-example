@@ -1,0 +1,32 @@
+- hosts: elastic
+  tasks:
+    - name: Download elastic script
+      shell:
+        git clone https://github.com/josh-thurston/easyELK.git
+    - name: Make script executable
+      shell:
+        chmod 777 -R ./easyELK
+    - name: Run elastic installer
+      become_user: root
+      become: yes
+      msg: 'This can take a while.. (5-10min)'
+      shell:
+        ./easyELK/easyELK
+    - name: Clean up installer
+      shell:
+        rm -rf ./easyELK
+    - name: Copy elastic configuration
+      become_user: root
+      become: yes
+      shell:
+        cp /vagrant/Elastic/elasticsearch.yml /etc/elasticsearch/
+    - name: Copy kibana configuration
+      become_user: root
+      become: yes
+      shell:
+        cp /vagrant/Elastic/kibana.yml /etc/kibana/
+    - name: Copy logstash configuration
+      become_user: root
+      become: yes
+      shell:
+        cp /vagrant/Elastic/logstash.yml /etc/logstash/

@@ -1,0 +1,15 @@
+#WIP, not tested
+- hosts: dcs
+  become_method: runas
+  vars:
+    ansible_become_password: 'P@ssw0rd1!'
+  tasks:
+    - name: Download WinLogBeat
+      win_shell: |
+        '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12'
+        wget -O 'C:\Users\vagrant\Downloads\winlogbeat.zip' "https://artifacts.elastic.co/downloads/beats/winlogbeat/winlogbeat-7.10.0-windows-x86_64.zip"
+    - name: Extract WinLogBeat
+      become: yes
+      become_user: 'LAB\Administrator'
+      win_shell:
+        expand-archive -literalpath 'C:\Users\vagrant\Downloads\winlogbeat.zip' -destinationpath 'C:\Windows\Program Files\WinLogBeat'
